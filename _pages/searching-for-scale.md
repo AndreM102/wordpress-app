@@ -10,6 +10,7 @@ layout: page
 permalink: >
   http://www.scalewp.io/searching-for-scale/
 published: true
+
 ---
 ## Enjoy Faster, More Relevant Results
 
