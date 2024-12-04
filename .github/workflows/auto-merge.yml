@@ -1,0 +1,35 @@
+name: Auto PR and Merge
+
+on:
+  push:
+    branches:
+      - '*'  # This will trigger on push to any branch
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config user.name "AndreM102"
+          git config user.email "rich.alpha444@gmail.com"
+
+      - name: Create Pull Request
+        id: create_pr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          title: "Auto PR: Merge changes from ${{ github.ref }}"
+          body: "This pull request was automatically created by GitHub Actions."
+          head: ${{ github.ref }}  # The branch that triggered the workflow
+          base: main  # Change this to your default branch
+
+      - name: Merge Pull Request
+        if: steps.create_pr.outputs.pull_request_url != ''
+        uses: peter-evans/merge-pull-request@v3
+        with:
+          pull-request-url: ${{ steps.create_pr.outputs.pull_request_url }}
+          merge-method: merge  # You can use 'merge', 'squash', or 'rebase'
